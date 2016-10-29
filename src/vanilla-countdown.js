@@ -34,9 +34,9 @@
 			DD = options.day,
 			HH = options.hour,
 			MI = options.minute,
-			SS = options.second,	
+			SS = options.second,
 			interval;
-		
+
 
 		that.init = function() {
 
@@ -66,33 +66,30 @@
 			hh = hh - (dd * 24);
 			// Default
 			countdown_string = '<span class="vanilla-countdown-numbers"> \
-				            <span class="number-day">{{number_day}}</span> \
 				            <span class="number-hour">{{number_hour}}</span> \
 				            <span class="number-minute">{{number_minute}}</span> \
 				            <span class="number-second">{{number_second}}</span> \
 				        </span>';
-						
+
 			var text_template = '<span class="vanilla-countdown-texts">	\
-							 <span class="text-day">{{text_day}}</span> \
 						    	 <span class="text-hour">{{text_hour}}</span> \
 						    	 <span class="text-minute">{{text_minute}}</span> \
 						    	 <span class="text-second">{{text_second}}</span> \
 						   </span>';
-				   
+
 			if(options.text !== false)
 				countdown_string += text_template;
-				
+
 			var variables = {
-				'number_day': dd && dd >= 0 ? dd.converted() + ':' : '00:',
 				'number_hour': toString(hh).length ? hh.converted() + ':' : '',
 				'number_minute': (toString(mm).length) ? mm.converted() + ':' : '',
 				'number_second': ss.converted(),
-				'text_day': (dd > 1) ? 'days' : 'day',
-				'text_hour': (hh > 1) ? 'hours' : 'hour',
-				'text_minute': (mm > 1) ? 'minutes' : 'minute',
-				'text_second': (ss > 1) ? 'seconds' : 'second'		
-			};			
-								
+				'text_day': (dd > 1) ? 'dias' : 'dia',
+				'text_hour': (hh > 1) ? 'hrs' : 'hrs',
+				'text_minute': (mm > 1) ? 'min' : 'min',
+				'text_second': (ss > 1) ? 'seg' : 'seg'		
+			};
+
 			var tags = countdown_string.match(/{{.*?}}/g);
 			tags.forEach(function(tag){
 				var tagValue = tag.substr(2, tag.length - 4);
@@ -102,9 +99,14 @@
 							.split(tag)
 							.join(variables[tagValue]);
 			});
-			
-			
+
+
 			element.innerHTML = countdown_string;
+
+            var event = document.createEvent('Event');
+            event.initEvent('countDownRendered', true, true);
+            window.dispatchEvent(event);
+
 
 			if ((future_date.getTime() < actual_date.getTime()) || ss < 0) {
 
